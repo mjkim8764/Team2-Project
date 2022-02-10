@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>책 정보 보기</title>
+<title>책 정보 삭제</title>
 
 </head>
 <body>
