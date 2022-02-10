@@ -18,7 +18,7 @@
     <h3>${requestScope.errorMsg}</h3>
 
     <br><br><br>
-    <a href="index.html">메인 화면으로 이동하기</a>
+    <a href="index.html">메인 화면으로 이동합니다</a>
 </center>
 
 </body>
