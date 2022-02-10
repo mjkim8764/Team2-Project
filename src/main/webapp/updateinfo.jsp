@@ -4,13 +4,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Insert title here</title>
+<title>내 정보 수정</title>
 </head>
 <body>
 <br><br><br>
 <center>
 
-<h3>재능 기부자 정보 수정하기 - 재능 분야 수정</h3>
+<h3>고객님의 정보를 수정해주세요 !</h3>
 <hr><p>
 
 <form action="controller?command=memberUpdate" method="post">
@@ -22,19 +22,18 @@
  	<tr>
  		<td><input type="text" name="id"  value="${member.id}" readonly></td>
  		<td><input type="text" name="pw" value="${mebmer.pw}"></td>
- 		<td>${member.name}</td>
+ 		<td><input type="text" name="name"  value="${member.name}" readonly></td>
  		<td>${member.mdate}</td>
  		<td>${mebmer.maxloan}</td>
  	</tr>
  	
- 	<tr>
- 		<td colspan="4">
- 			<input type="submit" value="수정">
- 			&nbsp;&nbsp;&nbsp;
- 			<input type="reset" value="취소">
- 		</td>
- 	</tr>
 </table>
+
+
+ <input type="submit" value="수정">
+ &nbsp;&nbsp;&nbsp;
+ <input type="reset" value="취소">
+
 </form>
 
 </center>

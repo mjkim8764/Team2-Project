@@ -7,13 +7,17 @@
     <title>내 정보</title>
 </head>
 <body>
+<br><br><br>
+<center>
+	<h3>고객님의 소중한 정보입니다.</h3><br><br>
+	이름 : <br>
+	가입날짜 : <br>
+	현재 대출 중인 책 권 수 : <br><br><br><br>
 
-<h3>
-    이름 : <br>
-    가입날짜 : <br>
 
-</h3>
+<button type="button" onclick="location.href='member.html'">메인으로</button>
 
+</center>
 
 </body>
 </html>
