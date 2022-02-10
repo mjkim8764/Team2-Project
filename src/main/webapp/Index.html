@@ -14,7 +14,7 @@
     로그인 해주세요 ! <br><br><br>
 </center>
 
-<form action="" method="post">
+<form action="controller?command=login" method="post">
 
     <!-- ID, PW 입력 & 로그인-->
     <center>
@@ -28,12 +28,8 @@
     </center>
 
     <center>
-        <input type="submit" value="로그인"><br><br>
-</form>
-
-<!-- 회원가입 -->
-<form action="signin.html">
-    <input type="submit" value="회원가입"></a>
+        <input type="submit" value="로그인">&nbsp;&nbsp;
+        <button type="button" onclick="location.href='signin.html'">회원가입</button>
     </center>
 </form>
 
