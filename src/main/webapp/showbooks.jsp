@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>책 정보 보기</title>
+<title>책 대출하기</title>
 
 </head>
 <body>
@@ -22,16 +22,15 @@
 		<th>출판사</th><th>출시일</th><th>보유권수</th>
 	</tr>
 	
-	<c:forEach items="${requestScope.books}" var="books"> 
-		${book.isbn}<br>
+	<c:forEach items="${requestScope.books}" var="book"> 
  		<tr></tr>
  		    <td><input type="checkbox" name="book" value="${book}"></td>
- 			<td>${books.isbn}</td>
- 			<td>${books.bname}</td>
- 			<td>${books.author}</td>
- 			<td>${books.publisher}</td>
- 			<td>${books.bdate}</td>
- 			<td>${books.bcnt}</td>
+ 		    <td>${book.isbn}</td>
+ 			<td><a href='/controller?command=bookInfo&bid=${book.id}'>${book.bname}</td>
+ 			<td>${book.author}</td>
+ 			<td>${book.publisher}</td>
+ 			<td>${book.bdate}</td>
+ 			<td>${book.bcnt}</td>
  		</tr>
  	</c:forEach> 
 </table>
@@ -48,9 +47,6 @@
 </SCRIPT>
 </form>
 <button type="button" onclick="location.href='member.html'">메인으로</button>
-
-<form action="controller?command=rentAllInfo" method="post">
-</form>
 
 </center>
 
