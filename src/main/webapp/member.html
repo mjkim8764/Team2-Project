@@ -9,19 +9,23 @@
 <center>
 <h3>원하는 메뉴를 선택하세요 !</h3>
 
-<a href="classname?command=methodname">책 리스트</a><br>
-<a href="classname?command=methodname">책 검색</a><br>
-<a href="classname?command=methodname">대출현황 확인</a><br><br><br>
+<a href="controller?command=bookAllInfo">1. 책 리스트</a><br><br>
+<form action="controller?command=bookInfo", method="post">
+2. 책 검색(이름을 입력하세요)<br>
+<input type="text" name="bname" value="">
+<input type="submit" value="검색"> 
+</form>
+<a href="controller?command=rentAllInfo">3. 대출현황 확인</a><br><br><br>
 
     <h3> 매니저 메뉴 </h3>
 
-<a href="classname?command=methodname">책 추가</a><br>
-<a href="classname?command=methodname">책 빼기</a><br>
-<a href="classname?command=methodname">책 정보수정</a><br><br><br>
+<a href="addbook.jsp">4. 책 추가</a><br>
+<a href="controller?command=bookAllInfo2">5. 책 제거</a><br>
+<a href="updatebook.html">6. 책 정보수정</a><br><br><br>
 
-    <button type="button" onclick="location.href='' ">내 정보</button>
-    <button type="button" onclick="location.href='' ">내 정보수정</button>
-    <button type="button" onclick="location.href='joinUs.jsp' ">회원 탈퇴</button>
+    <button type="button" onclick="location.href='myinfo.jsp' ">내 정보</button>
+    <button type="button" onclick="location.href='updateinfo.jsp' ">내 정보수정</button>
+    <button type="button" onclick="location.href=''">회원 탈퇴</button>
 
 </center>
 </body>
