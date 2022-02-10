@@ -11,7 +11,7 @@
 <h3>당신의 소중한 정보를 적어주세요 !</h3>
 </center>
 
-<form action="" method="post">
+<form action="controller?command=memberInsert" method="post">
     <!-- ID, PW 입력 & 로그인-->
     <center>
         <label>아이디 : </label>
@@ -33,11 +33,17 @@
         <input type="text" name="job"><br><br>
     </center>
 
-    <center>
-        <input type="submit" value="입력완료">
-    </center>
-
+	<center>
+		<input type="submit" value="가입" onclick='signin()'>
+		<SCRIPT LAUNGUAGE='JAVASCRIPT'>
+			function signin() {
+				alert('가입되었습니다!');
+				document.location.href="member.html";
+			}
+		</SCRIPT>
 </form>
+
+<button type="button" onclick="location.href='index.html'">로그인 화면으로</button>
 
 </body>
 </html>
