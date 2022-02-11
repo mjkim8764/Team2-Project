@@ -143,8 +143,8 @@ public class Controller extends HttpServlet {
 		HttpSession session = request.getSession();
 		String url = "showError.jsp";
 		
-		String id = (String)session.getAttribute("id");
-		String pw = request.getParameter("pw");
+  String id = (String)session.getAttribute("id");
+  String pw = request.getParameter("pw");
 	
 		try {
 			if(EbookModel.deleteMember(id, pw)) {
@@ -390,20 +390,4 @@ public class Controller extends HttpServlet {
 			request.getRequestDispatcher(url).forward(request, response);
 		}
 		
-		
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

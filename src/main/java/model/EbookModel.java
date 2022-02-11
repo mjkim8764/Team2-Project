@@ -37,10 +37,12 @@ public class EbookModel {
 	
 	public static boolean isManager (String id) throws SQLException{
 		return MembersDAO.isManager(id);
+
 	}
 	
 	public static boolean isMember (String id, String pw) throws SQLException{
 		return MembersDAO.isMember(id, pw);
+
 	}
 	
 	
