@@ -134,15 +134,56 @@ public class MembersDAO {
 		return member;
 	}
 	
-	public static boolean isManager(String id) throws SQLException{
+	public static boolean isManager(String id) throws SQLException {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String member = null;
+
+		try {
+			con = DBUtil.getConnection();
+//			return id.equals(Query출력문)
+			pstmt = con.prepareStatement(" select ? from members where job= ' "+" manager "+" '");
+			pstmt.setString(1, id);
+			rset = pstmt.executeQuery();
+			
+			if (rset.next()) {
+				if(rset.getString(1).equals(id)) {
+					return true;
+				}
+			}
+		} finally {
+			DBUtil.close(con, pstmt, rset);
+		}
 		return false;
 	}
+	
+	//아이디가있는지, 그게 일치하는지 반환은 t/f
+	public static boolean isMember(String mid, String mpw) throws SQLException {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String member = null;
 
-	public static void main(String args[]) {
 		try {
-			createMember(new MemberDTO("p2","pw","name","22-02-02",1));
-		} catch (Exception e) {
-			e.printStackTrace();
+			con = DBUtil.getConnection();
+			pstmt = con.prepareStatement(" select id,pw from members where id=? and where pw=?");
+			pstmt.setString(1, mid);
+			pstmt.setString(2, mpw);
+			rset = pstmt.executeQuery();
+			
+			// id 비교 -> pw
+			// id return
+			if (rset.next()) {
+				if(rset.getString(1).equals(mid)) {
+					if(rset.getString(2).equals(mpw)) {
+						return true;
+					}
+				}
+			}
+		} finally {
+			DBUtil.close(con, pstmt, rset);
 		}
+		return false;
 	}
 }

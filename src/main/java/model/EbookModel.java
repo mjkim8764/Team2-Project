@@ -39,6 +39,10 @@ public class EbookModel {
 		return MembersDAO.isManager(id);
 	}
 	
+	public static boolean isMember (String id, String pw) throws SQLException{
+		return MembersDAO.isMember(id, pw);
+	}
+	
 	
 	
 	//Book CRUD
@@ -74,7 +78,7 @@ public class EbookModel {
 	
 	
 	//Rent CRUD
-	public static boolean addRent(String id, String bid)throws SQLException{
+	public static boolean addRent(String id, String bid)throws Exception{
 		//책 권수 확인
 		//대출 가능 권수 확인
 		return RentDAO.createRent(id, bid);
