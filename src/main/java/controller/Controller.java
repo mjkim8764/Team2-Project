@@ -129,9 +129,10 @@ public class Controller extends HttpServlet {
 		String url = "showError.jsp";
 		
 		String id = request.getParameter("id");
+		String pw = request.getParameter("pw");
 	
 		try {
-			if(EbookModel.deleteMember(id)) {
+			if(EbookModel.deleteMember(id, pw)) {
 				request.setAttribute("successMsg", "삭제 완료");
 				url = "main.jsp";
 			}else {
