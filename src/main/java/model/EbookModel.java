@@ -4,6 +4,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import exception.NotExistException;
+import model.DAO.BookDAO;
+import model.DAO.MembersDAO;
+import model.DAO.RentDAO;
 import model.domain.BookDTO;
 import model.domain.MemberDTO;
 import model.domain.RentDTO;
@@ -12,11 +15,11 @@ public class EbookModel {
 	
 	//Member CRUD
 	public static boolean addMember(MemberDTO member)throws SQLException{
-		return MemberDAO.createMember(member);
+		return MembersDAO.createMember(member);
 	}
 	
 	public static MemberDTO getMember(String id) throws SQLException, NotExistException{
-		MemberDTO member = MemberDAO.getMember(id);
+		MemberDTO member = MembersDAO.getMember(id);
 		
 		if(member != null) {
 			return member;
@@ -25,15 +28,15 @@ public class EbookModel {
 	}
 	
 	public static boolean updateMember (String id, String pw, String name) throws SQLException{
-		return MemberDAO.updateMember(id, pw, name);
+		return MembersDAO.updateMember(id, pw, name);
 	}
 	
-	public static boolean deleteMember (String id) throws SQLException{
-		return MemberDAO.deleteMember(id);
+	public static boolean deleteMember (String id, String pw) throws SQLException{
+		return MembersDAO.deleteMember(id, pw);
 	}
 	
 	public static boolean isManager (String id) throws SQLException{
-		return MemberDAO.isManager(id);
+		return MembersDAO.isManager(id);
 	}
 	
 	
@@ -55,15 +58,15 @@ public class EbookModel {
 	}
 	
 	public static boolean updateBook (String id, String bid, int bcnt) throws SQLException{
-		if(isManager(id)) {
+		if(MembersDAO.isManager(id)) {
 			return BookDAO.updateBook(bid, bcnt);
 		}
 		return false;
 	}
 	
-	public static boolean deleteBook (String id, String id) throws SQLException{
+	public static boolean deleteBook (String id, String bid) throws SQLException{
 		if(isManager(id)) {
-			return BookDAO.deleteBook(id);
+			return BookDAO.deleteBook(bid);
 		}
 		return false;
 	}
@@ -82,6 +85,6 @@ public class EbookModel {
 	}
 	
 	public static boolean deleteRent (String id) throws SQLException{
-		RentDAO.deleteRent(id);
+		return RentDAO.deleteRent(id);
 	}
 }
