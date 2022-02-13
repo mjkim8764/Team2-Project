@@ -3,6 +3,7 @@ package model;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import exception.NoAvailableRent;
 import exception.NotExistException;
 import model.DAO.BookDAO;
 import model.DAO.MembersDAO;
@@ -12,6 +13,13 @@ import model.domain.MemberDTO;
 import model.domain.RentDTO;
 
 public class EbookModel {
+	
+	public static void Login(String id, String pw) throws Exception{
+		if(MembersDAO.isMember(id, pw)) {
+		}else {
+			throw new NotExistException("존재하지 않는 회원입니다");
+		}
+	}
 	
 	//Member CRUD
 	public static boolean addMember(MemberDTO member)throws SQLException{
@@ -35,28 +43,18 @@ public class EbookModel {
 		return MembersDAO.deleteMember(id, pw);
 	}
 	
-	public static boolean isManager (String id) throws SQLException{
-		return MembersDAO.isManager(id);
-
-	}
-	
-	public static boolean isMember (String id, String pw) throws SQLException{
-		return MembersDAO.isMember(id, pw);
-
-	}
-	
 	
 	
 	//Book CRUD
 	public static boolean addBook(String id, BookDTO book)throws SQLException{
-		if(isManager(id)) {
+		if(MembersDAO.isManager(id)) {
 			return BookDAO.createBook(book);
 		}
 		return false;
 	}
 	
-	public static BookDTO getBook(String id) throws SQLException{
-		return BookDAO.getBook(id);
+	public static BookDTO getBook(String bname) throws SQLException{
+		return BookDAO.getBook(bname);
 	}
 	
 	public static ArrayList<BookDTO> getAllBooks() throws SQLException{
@@ -71,11 +69,24 @@ public class EbookModel {
 	}
 	
 	public static boolean deleteBook (String id, String bid) throws SQLException{
-		if(isManager(id)) {
+		if(MembersDAO.isManager(id)) {
 			return BookDAO.deleteBook(bid);
 		}
 		return false;
 	}
+	
+	public static boolean deleteAllBook (String id, String[] bid) throws SQLException{
+		if(MembersDAO.isManager(id)) {
+			for(String b : bid) {
+				BookDAO.deleteBook(b);
+			}
+			return true;
+		}
+		return false;
+	}
+
+	
+	
 	
 	
 	
@@ -83,12 +94,34 @@ public class EbookModel {
 	public static boolean addRent(String id, String bid)throws Exception{
 		//책 권수 확인
 		//대출 가능 권수 확인
-		return RentDAO.createRent(id, bid);
+		if(RentDAO.createRent(id, bid)) {
+			System.out.println(11111);
+			BookDAO.minusBook(bid, 1);
+			MembersDAO.updateMemberCnt(id, -1);
+		}
+		return false;
 	}
 	
-	public static ArrayList<RentDTO> getAllRents() throws SQLException{
-		return RentDAO.getAllRents();
+	public static boolean addAllRent(String id, String[] bid)throws Exception{
+		//책 권수 확인
+		//대출 가능 권수 확인
+		if(bid.length > MembersDAO.getMember(id).getMaxloan()) {
+			throw new NoAvailableRent("대출 가능 권수를 초과했습니다.");
+		}else {
+			for(String b : bid) {
+				if(RentDAO.createRent(id, b)) {
+					BookDAO.minusBook(id, 1);
+					MembersDAO.updateMemberCnt(id, -1);
+				}
+			}
+			return true;
+		}
 	}
+
+	public static ArrayList<RentDTO> getAllRents(String id) throws SQLException{
+		return RentDAO.getAllRents(id);
+	}
+
 	
 	public static boolean deleteRent (String id) throws SQLException{
 		return RentDAO.deleteRent(id);

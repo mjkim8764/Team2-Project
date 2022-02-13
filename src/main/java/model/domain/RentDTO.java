@@ -10,7 +10,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class RentDTO {
-	private int rentno;
+	private String rentno;
 	private String bid;
 	private String mid;
 	private String rdate;

@@ -13,7 +13,7 @@
 
 <center><h3> 책 정보는 아래와 같습니다.</h3><br><h3> 삭제할 책을 선택하세요.</h3></center>
 
-<form action="controller?command=bookDelete" method="post">
+<form action="controller?command=bookAllDelete" method="post">
 
 <center>
 <table border="1">
@@ -22,15 +22,15 @@
 		<th>출판사</th><th>출시일</th><th>보유권수</th>
 	</tr>
 	
-	<c:forEach items="${requestScope.bookAllInfo}" var="bookAll"> 
- 		<tr>
- 			<td><input type="checkbox" name="book" value="${books}"></td>
- 			<td>${books.isbn}</td>
- 			<td>${books.bname}</td>
- 			<td>${books.author}</td>
- 			<td>${books.publisher}</td>
- 			<td>${books.bdate}</td>
- 			<td>${books.bcnt}</td>
+	<c:forEach items="${requestScope.books}" var="book"> 
+ 		<tr></tr>
+ 			<td><input type="checkbox" name="bid" value="${book.id}"></td>
+ 			<td>${book.isbn}</td>
+ 			<td>${book.bname}</td>
+ 			<td>${book.author}</td>
+ 			<td>${book.publisher}</td>
+ 			<td>${book.bdate}</td>
+ 			<td>${book.bcnt}</td>
  		</tr>
  	</c:forEach> 
 </table>
@@ -41,15 +41,12 @@
 <center>
 <input type="submit" value="제거하기" onclick='delete())'>
 <SCRIPT LAUNGUAGE='JAVASCRIPT'>
-	function reserve() {
+	function delete() {
 		alert('책들을 목록에서 제거되었습니다!');
 	}
 </SCRIPT>
 </form>
 <button type="button" onclick="location.href='member.html'">메인으로</button>
-
-<form action="controller?command=rentAllInfo" method="post">
-</form>
 
 </center>
 

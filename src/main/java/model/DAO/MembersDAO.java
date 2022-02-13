@@ -25,20 +25,19 @@ public class MembersDAO {
 			pstmt.setString(4, member.getMdate());
 			pstmt.setInt(5, member.getMaxloan());
 			pstmt.setString(6, "USER");
-			
+
 			int result = pstmt.executeUpdate();
 
 			if (result == 1) {
 				return true;
 			}
-		}finally {
+		} finally {
 			DBUtil.close(con, pstmt);
 		}
 		return false;
 	}
 
 	// 회원 탈퇴
-	// delete from members where id='koll01' AND pw= '1234';
 	public static boolean deleteMember(String memberId, String memberPw) throws SQLException {
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -58,14 +57,6 @@ public class MembersDAO {
 	}
 
 //	update members set id ='koll02' where id='koll01'
-	// manager권한
-	// 맴버 객체가 넘어와 그래서 수정이 되어있는게 있고 안되어있는게 있을건데 그거에 따라서 수정
-	// 회원 id와 회원 pw로 회원 수정하기
-
-	// update members set
-	// pw='1234',name='YEOM',mdate='2022-02-10',maxloan=5,job='USER' where
-	// id='koll01';
-
 	// manager ID 는 소문자로
 	public static boolean updateMember(String id, String pw, String name) throws SQLException {
 		Connection con = null;
@@ -73,9 +64,29 @@ public class MembersDAO {
 		try {
 			con = DBUtil.getConnection();
 			pstmt = con.prepareStatement("update members set pw=?, name=? where id=?");
-			//pstmt.setString(1, member.getPw());
-			//pstmt.setString(2, member.getName());
-			//pstmt.setString(3, member.getId());
+			pstmt.setString(1, pw);
+			pstmt.setString(2, name);
+			pstmt.setString(3, id);
+
+			int result = pstmt.executeUpdate();
+
+			if (result == 1) {
+				return true;
+			}
+		} finally {
+			DBUtil.close(con, pstmt);
+		}
+		return false;
+	}
+	
+	public static boolean updateMemberCnt(String id, int cnt) throws SQLException{
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		try {
+			con = DBUtil.getConnection();
+			pstmt = con.prepareStatement("update members set maxloan=maxloan + ? where id=?");
+			pstmt.setInt(1, cnt);
+			pstmt.setString(1, id);
 
 			int result = pstmt.executeUpdate();
 
@@ -88,10 +99,6 @@ public class MembersDAO {
 		return false;
 	}
 
-	// rent
-	// -1 무시되는거고
-	// 0이상의 정수가 들어오면 update되는 숫자로
-//		id로 해당 기부자의 모든 정보 반환
 	public static MemberDTO getMember(String memberId) throws SQLException {
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -121,7 +128,7 @@ public class MembersDAO {
 
 		try {
 			con = DBUtil.getConnection();
-			pstmt = con.prepareStatement("select * from book");
+			pstmt = con.prepareStatement("select * from members");
 			rset = pstmt.executeQuery();
 			member = new ArrayList<MemberDTO>();
 			while (rset.next()) {
@@ -133,7 +140,7 @@ public class MembersDAO {
 		}
 		return member;
 	}
-	
+
 	public static boolean isManager(String id) throws SQLException {
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -143,11 +150,12 @@ public class MembersDAO {
 		try {
 			con = DBUtil.getConnection();
 //			return id.equals(Query출력문)
-			pstmt = con.prepareStatement(" select ? from members where job= ' "+" manager "+" '");
+			pstmt = con.prepareStatement("select ? from members where job='MANAGER'");
 			pstmt.setString(1, id);
 			rset = pstmt.executeQuery();
 			
 			if (rset.next()) {
+				System.out.println(rset.getString(1));
 				if(rset.getString(1).equals(id)) {
 					return true;
 				}
@@ -167,7 +175,7 @@ public class MembersDAO {
 
 		try {
 			con = DBUtil.getConnection();
-			pstmt = con.prepareStatement(" select id,pw from members where id=? and where pw=?");
+			pstmt = con.prepareStatement("select id,pw from members where id=? and pw=?");
 			pstmt.setString(1, mid);
 			pstmt.setString(2, mpw);
 			rset = pstmt.executeQuery();
@@ -185,5 +193,13 @@ public class MembersDAO {
 			DBUtil.close(con, pstmt, rset);
 		}
 		return false;
+	}
+
+	public static void main(String args[]) {
+		try {
+			isManager("koll01");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

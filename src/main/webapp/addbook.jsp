@@ -16,7 +16,7 @@
     <!-- ID, PW 입력 & 로그인-->
     <center>
         <label>책 아이디 : </label>
-        <input type="text" name="id"><br>
+        <input type="text" name="bid"><br>
     </center>
 
     <center>
@@ -36,17 +36,17 @@
     
     <center>
         &nbsp;&nbsp;&nbsp;<label>출판사 : </label>
-        <input type="text" name="author"><br>
+        <input type="text" name="publisher"><br>
     </center>
     
     <center>
         &nbsp;&nbsp;&nbsp;<label>출시일 : </label>
-        <input type="text" name="author"><br>
+        <input type="text" name="bdate"><br>
     </center>
     
     <center>
         &nbsp;&nbsp;&nbsp;<label>책 보유 권수 : </label>
-        <input type="text" name="author"><br>
+        <input type="text" name="bcnt"><br>
     </center>
 
 	<center>
@@ -54,7 +54,7 @@
 		<SCRIPT LAUNGUAGE='JAVASCRIPT'>
 			function addbook() {
 				alert('추가되었습니다!');
-				document.location.href="member.html";
+				document.location.href="member.jsp";
 			}
 		</SCRIPT>
 </form>

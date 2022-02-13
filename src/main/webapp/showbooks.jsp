@@ -13,7 +13,7 @@
 
 <center><h3> 책 정보는 아래와 같습니다.</h3><br><h3> 대출할 책을 선택하세요.</h3></center>
 
-<form action="controller?command=rentInsert" method="post">
+<form action="controller?command=rentAllInsert" method="post">
 
 <center>
 <table border="1">
@@ -22,9 +22,11 @@
 		<th>출판사</th><th>출시일</th><th>보유권수</th>
 	</tr>
 	
+	${sessionScope.id}
+	
 	<c:forEach items="${requestScope.books}" var="book"> 
  		<tr></tr>
- 		    <td><input type="checkbox" name="book" value="${book}"></td>
+ 		    <td><input type="checkbox" name="bid" value="${book.id}"></td>
  		    <td>${book.isbn}</td>
  			<td><a href='/controller?command=bookInfo&bid=${book.id}'>${book.bname}</td>
  			<td>${book.author}</td>

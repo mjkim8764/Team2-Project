@@ -18,18 +18,16 @@
 <center>
 <table border="1">
 	<tr>   
-		<th>대출 관리번호</th><th>책 아이디</th><th>회원 아이디</th><th>책 대출일</th>
+		<th>체크</th><th>대출 관리번호</th><th>책 아이디</th><th>회원 아이디</th><th>책 대출일</th>
 	</tr>
 	
 	<c:forEach items="${requestScope.rents}" var="rent"> 
  		<tr>
- 			<td><input type="checkbox" name="book" value="${rents}"></td>
- 			<td>${rent.isbn}</td>
- 			<td>${rent.bname}</td>
- 			<td>${rent.author}</td>
- 			<td>${rent.publisher}</td>
- 			<td>${rent.bdate}</td>
- 			<td>${rent.bcnt}</td>
+ 			<td><input type="checkbox" name="rent" value="${rent.rentno}"></td>
+ 			<td>${rent.rentno}</td>
+ 			<td>${rent.bid}</td>
+ 			<td>${rent.mid}</td>
+ 			<td>${rent.rdate}</td>
  		</tr>
  	</c:forEach> 
 </table>
@@ -38,14 +36,14 @@
 <br><br>
 
 <center>
-<input type="submit" value="대출하기" onclick='reserve()'>
+<input type="submit" value="반납하기" onclick='notreserve()'>
 <SCRIPT LAUNGUAGE='JAVASCRIPT'>
-	function reserve() {
-		alert('대출되었습니다!');
+	function notreserve() {
+		alert('반납되었습니다!');
 	}
 </SCRIPT>
 </form>
-<button type="button" onclick="location.href='member.html'">메인으로</button>
+<button type="button" onclick="location.href='member.jsp'">메인으로</button>
 
 </center>
 

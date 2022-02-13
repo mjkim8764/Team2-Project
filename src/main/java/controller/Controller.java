@@ -46,20 +46,22 @@ public class Controller extends HttpServlet {
 				bookUpdate(request, response);
 			}else if(command.equals("bookDelete")){
 				bookDelete(request, response);
+			}else if(command.equals("bookAllDelete")){
+				bookAllDelete(request, response);
 			}else if(command.equals("bookInfo")){
 				bookInfo(request, response);
 			}else if(command.equals("bookAllInfo")){
 				bookAllInfo(request, response);
 			}else if(command.equals("bookAllInfo2")){
 				bookAllInfo2(request, response);
+			}else if(command.equals("bookAllInfo3")) {
+				bookAllInfo3(request, response);
 			}else if(command.equals("rentInsert")){
 				rentInsert(request, response);
 			}else if(command.equals("rentDelete")){
 				rentDelete(request, response);
 			}else if(command.equals("rentAllInfo")){
 				rentAllInfo(request, response);
-			}else if(command.equals("logout")){
-				Logout(request, response);
 			}
 		}catch (Exception e){
 			request.setAttribute("errorMsg", e.getMessage());
@@ -76,13 +78,10 @@ public class Controller extends HttpServlet {
 		String pw = request.getParameter("pw");
 		
 		try {
-			if(EbookModel.isMember(id, pw)) {
-				session = request.getSession();
-				session.setAttribute("id",id);
-				url = "main.jsp";
-			}else {
-				request.setAttribute("errorMsg", "회원 정보가 존재하지 않습니다.");
-			}
+			EbookModel.Login(id, pw);
+			session = request.getSession();
+			session.setAttribute("id",id);
+			url = "member.jsp";
 		}catch (Exception e) {
 			request.setAttribute("errorMsg", e.getMessage());
 			e.printStackTrace();
@@ -106,7 +105,7 @@ public class Controller extends HttpServlet {
 			if(EbookModel.addMember(member)) {
 				request.setAttribute("member", member);
 				request.setAttribute("successMsg", "가입 완료");
-				url = "main.jsp";
+				url = "member.jsp";
 			}else {
 				request.setAttribute("errorMsg", "다시 시도하세요");
 			}
@@ -128,7 +127,7 @@ public class Controller extends HttpServlet {
 		try {
 			if(EbookModel.updateMember(id, pw, name)) {
 				request.setAttribute("successMsg", "수정 완료");
-				url = "main.jsp";
+				url = "member.jsp";
 			}else {
 				request.setAttribute("errorMsg", "다시 시도하세요");
 			}
@@ -143,13 +142,13 @@ public class Controller extends HttpServlet {
 		HttpSession session = request.getSession();
 		String url = "showError.jsp";
 		
-  String id = (String)session.getAttribute("id");
-  String pw = request.getParameter("pw");
+		String id = (String)session.getAttribute("id");
+		String pw = request.getParameter("pw");
 	
 		try {
 			if(EbookModel.deleteMember(id, pw)) {
 				request.setAttribute("successMsg", "삭제 완료");
-				url = "main.jsp";
+				url = "member.jsp";
 			}else {
 				request.setAttribute("errorMsg", "다시 시도하세요");
 			}
@@ -170,7 +169,7 @@ public class Controller extends HttpServlet {
 			MemberDTO member = EbookModel.getMember(id);
 			if(member != null) {
 				request.setAttribute("member", member);
-				url = "main.jsp";
+				url = "member.jsp";
 			}else {
 				request.setAttribute("errorMsg", "다시 시도하세요");
 			}
@@ -192,18 +191,18 @@ public class Controller extends HttpServlet {
 			String bid = request.getParameter("bid");
 			int isbn = Integer.parseInt(request.getParameter("isbn"));
 			String bname = request.getParameter("bname");
-			String quthor = request.getParameter("bname");
+			String author = request.getParameter("author");
 			String publisher = request.getParameter("publisher");
 			String bdate = request.getParameter("bdate");
 			int bcnt = Integer.parseInt(request.getParameter("bcnt"));
 			
-			BookDTO book = new BookDTO(bid, isbn, bname, quthor, publisher, bdate, bcnt);
+			BookDTO book = new BookDTO(bid, isbn, bname, author, publisher, bdate, bcnt);
 			
 			try {
 				if(EbookModel.addBook(id, book)) {
 					request.setAttribute("book", book);
 					request.setAttribute("successMsg", "등록 완료");
-					url = "main.jsp";
+					url = "member.jsp";
 				}else {
 					request.setAttribute("errorMsg", "다시 시도하세요");
 				}
@@ -225,7 +224,7 @@ public class Controller extends HttpServlet {
 			try {
 				if(EbookModel.updateBook(id, bid, bcnt)) {
 					request.setAttribute("successMsg", "수정 완료");
-					url = "main.jsp";
+					url = "member.jsp";
 				}else {
 					request.setAttribute("errorMsg", "다시 시도하세요");
 				}
@@ -246,7 +245,28 @@ public class Controller extends HttpServlet {
 			try {
 				if(EbookModel.deleteBook(id, bid)) {
 					request.setAttribute("successMsg", "삭제 완료");
-					url = "main.jsp";
+					url = "member.jsp";
+				}else {
+					request.setAttribute("errorMsg", "다시 시도하세요");
+				}
+			}catch (Exception e) {
+				request.setAttribute("errorMsg", e.getMessage());
+				e.printStackTrace();
+			}
+			request.getRequestDispatcher(url).forward(request, response);
+		}
+		
+		public void bookAllDelete (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+			HttpSession session = request.getSession();
+			String url = "showError.jsp";
+			
+			String id = (String)session.getAttribute("id");
+			String[] bid = request.getParameterValues("bid");
+		
+			try {
+				if(EbookModel.deleteAllBook(id, bid)) {
+					request.setAttribute("successMsg", "삭제 완료");
+					url = "member.jsp";
 				}else {
 					request.setAttribute("errorMsg", "다시 시도하세요");
 				}
@@ -266,7 +286,7 @@ public class Controller extends HttpServlet {
 				BookDTO book = EbookModel.getBook(bname);
 				if(book != null) {
 					request.setAttribute("book", book);
-					url = "main.jsp";
+					url = "showbook.jsp";
 				}else {
 					request.setAttribute("errorMsg", "다시 시도하세요");
 				}
@@ -314,10 +334,25 @@ public class Controller extends HttpServlet {
 			request.getRequestDispatcher(url).forward(request, response);
 		}
 		
+		public void bookAllInfo3 (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+			String url = "showError.jsp";
+			System.out.println("---=-=-=-=-=");
+			try {
+				ArrayList<BookDTO> books = EbookModel.getAllBooks();
+				if(books != null) {
+					request.setAttribute("books", books);
+					url = "updatebook.jsp";
+				}else {
+					request.setAttribute("errorMsg", "다시 시도하세요");
+				}
+			}catch (Exception e) {
+				request.setAttribute("errorMsg", e.getMessage());
+				e.printStackTrace();
+			}
+			request.getRequestDispatcher(url).forward(request, response);
+		}
 		
-		
-		
-		
+
 		//대출 정보 CRUD
 		public void rentInsert (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			HttpSession session = request.getSession();
@@ -330,7 +365,28 @@ public class Controller extends HttpServlet {
 			try {
 				if(EbookModel.addRent(id, bid)) {
 					request.setAttribute("successMsg", "등록 완료");
-					url = "main.jsp";
+					url = "member.jsp";
+				}else {
+					request.setAttribute("errorMsg", "다시 시도하세요");
+				}
+			}catch (Exception e) {
+				request.setAttribute("errorMsg", e.getMessage());
+				e.printStackTrace();
+			}
+			request.getRequestDispatcher(url).forward(request, response);
+		}
+		
+		public void rentAllInsert (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+			HttpSession session = request.getSession();
+			String url = "showError.jsp";
+			
+			String id = (String)session.getAttribute("id");
+			String[] bid = request.getParameterValues("bid");
+		
+			try {
+				if(EbookModel.addAllRent(id, bid)) {
+					request.setAttribute("successMsg", "등록 완료");
+					url = "member.jsp";
 				}else {
 					request.setAttribute("errorMsg", "다시 시도하세요");
 				}
@@ -345,12 +401,12 @@ public class Controller extends HttpServlet {
 		public void rentDelete (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			String url = "showError.jsp";
 			
-			String rid = request.getParameter("rid");
+			String rid = request.getParameter("rent");
 		
 			try {
 				if(EbookModel.deleteRent(rid)) {
 					request.setAttribute("successMsg", "삭제 완료");
-					url = "main.jsp";
+					url = "member.jsp";
 				}else {
 					request.setAttribute("errorMsg", "다시 시도하세요");
 				}
@@ -360,12 +416,15 @@ public class Controller extends HttpServlet {
 			}
 			request.getRequestDispatcher(url).forward(request, response);
 		}
-	
+		
 		public void rentAllInfo (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+			HttpSession session = request.getSession();
 			String url = "showError.jsp";
 			
+			String id = (String)session.getAttribute("id");
+			
 			try {
-				ArrayList<RentDTO> rents = EbookModel.getAllRents();
+				ArrayList<RentDTO> rents = EbookModel.getAllRents(id);
 				if(rents != null) {
 					request.setAttribute("rents", rents);
 					url = "rent.jsp";
@@ -379,15 +438,6 @@ public class Controller extends HttpServlet {
 			request.getRequestDispatcher(url).forward(request, response);
 		}
 	
-			
-		public void Logout (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-			String url = "showError.jsp";
-			try {
-			}catch (Exception e) {
-				request.setAttribute("errorMsg", e.getMessage());
-				e.printStackTrace();
-			}
-			request.getRequestDispatcher(url).forward(request, response);
-		}
-		
+	
+	
 }

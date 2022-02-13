@@ -20,17 +20,22 @@
 			<th>아이디</th><th>비밀번호</th><th>이름</th><th>가입날짜</th><th>대출권수</th>
 		</tr>
  	<tr>
- 		<td><input type="text" name="id"  value="${member.id}" readonly></td>
+ 		<td><input type="text" name="id"  value="${sessionScope.id}" readonly></td>
  		<td><input type="text" name="pw" value="${mebmer.pw}"></td>
- 		<td><input type="text" name="name"  value="${member.name}" readonly></td>
+ 		<td><input type="text" name="name"  value="${member.name}"></td>
  		<td>${member.mdate}</td>
  		<td>${mebmer.maxloan}</td>
  	</tr>
  	
 </table>
-
-
- <input type="submit" value="수정">
+ 
+ <input type="submit" value="수정" onclick='update()'>
+		<SCRIPT LAUNGUAGE='JAVASCRIPT'>
+			function update() {
+				alert('정보가 수정되었습니다!');
+				document.location.href="member.jsp";
+			}
+		</SCRIPT>
  &nbsp;&nbsp;&nbsp;
  <input type="reset" value="취소">
 

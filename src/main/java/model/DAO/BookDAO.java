@@ -59,7 +59,6 @@ public class BookDAO {
 			pstmt = con.prepareStatement("delete from book where id=?");
 			pstmt.setString(1, bookId);
 			
-
 			int result = pstmt.executeUpdate();
 			
 			// 만약에 -1 이 들어오면 무시
@@ -136,7 +135,7 @@ public class BookDAO {
 	}
 	
 	// 출력
-	public static BookDTO getBook(String bookId) throws SQLException {
+	public static BookDTO getBook(String bname) throws SQLException {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -144,8 +143,8 @@ public class BookDAO {
 
 		try {
 			con = DBUtil.getConnection();
-			pstmt = con.prepareStatement("select * from book where id=?");
-			pstmt.setString(1, bookId);
+			pstmt = con.prepareStatement("select * from book where bname=?");
+			pstmt.setString(1, bname);
 			rset = pstmt.executeQuery();
 			if (rset.next()) {
 				book = new BookDTO(rset.getString(1), rset.getInt(2), rset.getString(3), rset.getString(4),
